@@ -3,7 +3,10 @@ const StatisticLine=(props)=>{
     const {text, value, end}=props
 
     return(
-        <p>{text} {value} {end}</p>
+        <tr>
+            <td>{text}</td>
+            <td>{value}{end}</td>
+        </tr>
     )
 }
 
