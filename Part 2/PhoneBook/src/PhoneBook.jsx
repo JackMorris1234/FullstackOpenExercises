@@ -1,5 +1,8 @@
-const Phonebook=({namesToShow})=>{
 
+const Phonebook=({showAll, persons, filter})=>{
+    const namesToShow=showAll
+    ? persons
+    :persons.filter(person=>person.name.includes(filter))
 
 
     return(
