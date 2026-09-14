@@ -7,7 +7,7 @@ import axios from 'axios'
 const App = () => {
 
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '781-917-5337' }
+    { name: 'Arto Hellas', number: '781-917-5337' }
   ])
 
 

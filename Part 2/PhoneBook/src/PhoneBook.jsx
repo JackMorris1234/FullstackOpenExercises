@@ -6,7 +6,7 @@ const Phonebook=({showAll, persons, filter})=>{
 
 
     return(
-    <ul>{namesToShow.map((person)=><li key={person.name}>{person.name} {person.phone}</li>)}</ul>
+    <ul>{namesToShow.map((person)=><li key={person.name}>{person.name} {person.number}</li>)}</ul>
     )
 }
 export default Phonebook

@@ -14,7 +14,7 @@ const InputForm=({setPersons, persons})=>{
         event.preventDefault()
         const newPerson={
             name: newName,
-            phone: newPhone
+            number: newPhone
         }
         const names=persons.map((person)=>person.name)
         if (names.indexOf(newPerson.name)==-1){
