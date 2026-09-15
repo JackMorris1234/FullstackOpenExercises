@@ -1,8 +1,9 @@
 import { useState } from "react"
-
+import frontEndToBack from './BackendCommunication'
 const InputForm=({setPersons, persons})=>{
     const [newName, setNewName] = useState('')
     const [newPhone, setNewPhone]= useState('')
+
     const handleInput=(event)=>{
         setNewName(event.target.value)
     }
@@ -17,12 +18,19 @@ const InputForm=({setPersons, persons})=>{
             number: newPhone
         }
         const names=persons.map((person)=>person.name)
-        if (names.indexOf(newPerson.name)==-1){
-            setPersons(persons.concat(newPerson))
+        const indexOfNew=names.indexOf(newPerson.name)
+        if (indexOfNew==-1){
+            frontEndToBack.create(newPerson)
+            .then((returnedPerson)=>setPersons(persons.concat(returnedPerson)))
             setNewName('')
             setNewPhone('')
         }else{
-            alert('${newName} is already part of the phonebook.')
+
+            if(window.confirm(`${newName} is already part of the phonebook, do you wish to change their number?`)){
+                frontEndToBack.update(persons[indexOfNew].id, newPerson)
+            }
+            
+
         }
     
     }
