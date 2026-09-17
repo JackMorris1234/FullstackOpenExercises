@@ -15,7 +15,7 @@ function App() {
     <>
       <div>
         <Search search={search} setSearch={setSearch}/>
-        <Results search={search}/>
+        <Results search={search} setSearch={setSearch}/>
       </div>
     </>
   )
