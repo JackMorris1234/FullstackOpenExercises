@@ -21,19 +21,14 @@
       "id": "4"
     },
     {
-      "name": "Jack Morris",
-      "number": "123456",
-      "id": "cHkEon3Zt6s"
-    },
-    {
       "name": "jashua",
-      "number": "",
+      "number": "87653",
       "id": "gPPylGDsOdY"
     },
     {
-      "name": "jack",
+      "name": "Daviciesalkdj",
       "number": "",
-      "id": "sh5aViw7GJY"
+      "id": "Qr_rllKNRho"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
