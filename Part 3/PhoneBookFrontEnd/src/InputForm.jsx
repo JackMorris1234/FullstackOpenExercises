@@ -21,13 +21,21 @@ const InputForm=({setPersons, persons, setSuccessMessage, setErrorMessage})=>{
         const names=persons.map((person)=>person.name)
         const indexOfNew=names.indexOf(newPerson.name)
         if (indexOfNew==-1){
-            frontEndToBack.create(newPerson)
+            frontEndToBack
+            .create(newPerson)
             .then((returnedPerson)=>{
                 setPersons(persons.concat(returnedPerson))
                 setSuccessMessage(`Added ${newName} with phone ${newPhone}`)
                     setTimeout(()=>{
                      setSuccessMessage(null)
                     }, 5000)
+            })
+            .catch(error=>{
+                console.log("frontend error message",error.response.data.error)
+                setErrorMessage(`${error.response.data.error}`)
+                setTimeout(()=>{
+                        setErrorMessage(null)
+                }, 5000)
             })
 
             //.then((returned)=>console.log('creation',returned))
