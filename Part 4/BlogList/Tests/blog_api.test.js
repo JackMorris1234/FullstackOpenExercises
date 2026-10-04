@@ -42,7 +42,7 @@ test('all blogs are returned', async () => {
   assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
-test('a specific note is within the returned notes', async () => {
+test('a specific blog is within the returned notes', async () => {
   const response = await api.get('/api/blogs')
   const titles = response.body.map(e => e.title)
    
@@ -69,6 +69,56 @@ test('a valid blog can be added ', async () => {
   const titles = response.body.map(r => r.title)
   assert.strictEqual(response.body.length, initialBlogs.length + 1)
   assert(titles.includes('hello there'))
+})
+
+test('the identifier property is named id, not _id', async ()=>{
+    const response=await api.get('/api/blogs')
+    assert(response.body[0].id)
+})
+
+test('empty likes field defaults to 0 during post requests', async ()=>{
+
+    const blog={
+        title: 'empty likes',
+        author: "empty likes",
+        url: "empty likes",
+    }
+    await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const blogs=await api.get('/api/blogs')
+    const likes=blogs.body.map(e=>e.likes)
+
+    assert(likes.includes(0))
+    assert.strictEqual(blogs.body.length, initialBlogs.length+1)
+})
+
+test('missing url or title returns 400 bad request', async () => {
+    const missingTitle={
+        title: 'empty likes',
+        author: "empty likes",
+    }
+
+    const missingUrl={
+        author: "empty likes",
+        url: "empty likes",
+    }
+    await api
+    .post('/api/blogs')
+    .send(missingTitle)
+    .expect(400)
+    let response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, initialBlogs.length)
+
+    await api
+    .post('/api/blogs')
+    .send(missingUrl)
+    .expect(400)
+    response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
 after(async () => {
