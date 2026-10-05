@@ -121,6 +121,50 @@ test('missing url or title returns 400 bad request', async () => {
     assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
+test('delete single blog by id', async ()=>{
+  const newBlog = {
+    title: 'DeleteTest',
+    author: "String",
+    url: "String",
+    likes: 6,
+    }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+  let response = await api.get('/api/blogs')
+  assert.strictEqual(response.body.length, initialBlogs.length+1)
+  let id=null
+  response.body.map(blog=>blog.title==='DeleteTest'?id=blog.id:null)
+  await api
+    .delete(`/api/blogs/${id}`)
+    .expect(204)
+  response=await api.get(`/api/blogs`)
+  assert.strictEqual(response.body.length, initialBlogs.length)
+})
+
+
+test(`replace a blog`, async ()=>{
+  const newBlog = {
+    title: 'replaceTest',
+    author: "String",
+    url: "String",
+    likes: 6,
+    }
+  let response = await api.get('/api/blogs')
+  let id=null
+  response.body.map(blog=>blog.title==='String'?id=blog.id:null)
+  await api
+  .put(`/api/blogs/${id}`)
+  .send(newBlog)
+  .expect(200)
+  response = await api.get('/api/blogs')
+  const titles=response.body.map(blog=>blog.title)
+  assert(titles.includes('replaceTest'))
+
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
