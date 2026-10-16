@@ -1,11 +1,13 @@
-const { test, after, beforeEach } = require('node:test')
+const { test, after, beforeEach, before } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog=require('../Models/blog')
 const assert = require('node:assert')
+const { isNull } = require('lodash')
 const api = supertest(app)
 
+let token=null
 const initialBlogs = [
   {
     title: "String",
@@ -20,6 +22,21 @@ const initialBlogs = [
     likes:1
   },
 ]
+before(async ()=>{
+  const loginObject={
+    username : 'Test',
+    password : 'password'
+  }
+  const response=await api
+  .post('/api/login')
+  .send(loginObject)
+  .expect(200)
+  
+  token=response.body.token
+  console.log('token: ', token)
+})
+
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new Blog(initialBlogs[0])
@@ -60,6 +77,7 @@ test('a valid blog can be added ', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -85,6 +103,7 @@ test('empty likes field defaults to 0 during post requests', async ()=>{
     }
     await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(blog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -108,6 +127,7 @@ test('missing url or title returns 400 bad request', async () => {
     }
     await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(missingTitle)
     .expect(400)
     let response = await api.get('/api/blogs')
@@ -115,6 +135,7 @@ test('missing url or title returns 400 bad request', async () => {
 
     await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(missingUrl)
     .expect(400)
     response = await api.get('/api/blogs')
@@ -131,6 +152,7 @@ test('delete single blog by id', async ()=>{
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
   let response = await api.get('/api/blogs')
@@ -139,6 +161,7 @@ test('delete single blog by id', async ()=>{
   response.body.map(blog=>blog.title==='DeleteTest'?id=blog.id:null)
   await api
     .delete(`/api/blogs/${id}`)
+    .set('Authorization', `Bearer ${token}`)
     .expect(204)
   response=await api.get(`/api/blogs`)
   assert.strictEqual(response.body.length, initialBlogs.length)
@@ -157,6 +180,7 @@ test(`replace a blog`, async ()=>{
   response.body.map(blog=>blog.title==='String'?id=blog.id:null)
   await api
   .put(`/api/blogs/${id}`)
+  .set('Authorization', `Bearer ${token}`)
   .send(newBlog)
   .expect(200)
   response = await api.get('/api/blogs')
