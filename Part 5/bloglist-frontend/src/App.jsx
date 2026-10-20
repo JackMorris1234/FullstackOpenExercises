@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import Login from './components/Logins'
 import Notification from './components/Notification'
 import Button from './components/Button'
+import AddBlog from './components/AddBlog'
   
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -43,6 +44,7 @@ const App = () => {
       {user && <Button handleClick={handleLogout} text='Logout'/>}
       <Notification message={errorMessage}/>
       <Notification message={successMessage}/>
+      {user &&<AddBlog blogs={blogs} setBlogs={setBlogs}/>}
       {user && <h2>blogs</h2> && blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

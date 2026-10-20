@@ -27,11 +27,9 @@ const Login=({setUser, setErrorMessage, setSuccessMessage})=>{
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
-    }
-    }
+    }}
 
-
-
+    
     return(
     <div>
     <h2>Login</h2>
