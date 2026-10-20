@@ -6,9 +6,12 @@ const middleware = require('./Utils/middleware')
 const blogsRouter=require('./Controllers/blogs')
 const usersRouter=require('./Controllers/users')
 const loginRouter=require('./Controllers/login')
+const cors=require('cors')
 
 const app = express()
-
+app.use(cors({
+  origin: 'http://localhost:5173',
+}))
 
 logger.info('connecting to', URL)
 mongoose
