@@ -21,7 +21,7 @@ const Login=({setUser, setErrorMessage, setSuccessMessage})=>{
             setSuccessMessage('logged in')
             setTimeout(() => {
                 setSuccessMessage(null)
-            }, 5000)
+            }, 5000) 
         } catch {
             setErrorMessage('wrong credentials')
             setTimeout(() => {
