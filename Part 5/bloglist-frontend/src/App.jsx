@@ -44,7 +44,7 @@ const App = () => {
       {user && <Button handleClick={handleLogout} text='Logout'/>}
       <Notification message={errorMessage}/>
       <Notification message={successMessage}/>
-      {user &&<AddBlog blogs={blogs} setBlogs={setBlogs}/>}
+      {user &&<AddBlog blogs={blogs} setBlogs={setBlogs} setSuccessMessage={setSuccessMessage} user={user}/>}
       {user && <h2>blogs</h2> && blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

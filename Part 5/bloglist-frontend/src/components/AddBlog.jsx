@@ -2,7 +2,7 @@ import Button from './Button'
 import {useState} from 'react'
 import blogService from '../services/blogs'
 
-const AddBlog=({blogs, setBlogs})=>{
+const AddBlog=({blogs, setBlogs, setSuccessMessage, user})=>{
     const [title, setTitle]=useState('')
     const [author, setAuthor]=useState('')
     const [url, setUrl]=useState('')
@@ -12,6 +12,10 @@ const AddBlog=({blogs, setBlogs})=>{
         const blog={title: title, author: author, url: url}
         blogService.create(blog)
         setBlogs(blogs.concat(blog))
+        setSuccessMessage(`new blog added by ${user.username}`)
+        setTimeout(() => {
+                setSuccessMessage(null)
+        }, 5000) 
 
     }
 
