@@ -5,7 +5,6 @@ import Login from './components/Logins'
 import Notification from './components/Notification'
 import Button from './components/Button'
 import AddBlog from './components/AddBlog'
-  
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser]=useState(null)
@@ -15,8 +14,12 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
-  }, [])   
+    )
+  }, [])
+
+  useEffect(() => {
+    blogs.sort((blog1, blog2) => blog2.likes-blog1.likes)
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('BlogListUser')
@@ -28,14 +31,10 @@ const App = () => {
   }, [])
 
 
-  const handleLogout=()=>{
+  const handleLogout=() => {
     setUser(null)
     window.localStorage.removeItem('BlogListUser')
   }
-
-  
-
-
 
   return (
     <div>
@@ -46,7 +45,7 @@ const App = () => {
       <Notification message={successMessage}/>
       {user &&<AddBlog blogs={blogs} setBlogs={setBlogs} setSuccessMessage={setSuccessMessage} user={user}/>}
       {user && <h2>blogs</h2> && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs}/>
       )}
     </div>
   )
