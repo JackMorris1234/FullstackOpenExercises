@@ -1,21 +1,20 @@
 import Button from './Button'
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import AddForm from './AddForm'
 
 const AddBlog=({ blogs, setBlogs, setSuccessMessage, user }) => {
-  const [title, setTitle]=useState('')
-  const [author, setAuthor]=useState('')
-  const [url, setUrl]=useState('')
+  // const [title, setTitle]=useState('')
+  // const [author, setAuthor]=useState('')
+  // const [url, setUrl]=useState('')
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
   const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
   const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
 
-  const handleNewBlog=async event => {
-    event.preventDefault()
-    const blog={ title: title, author: author, url: url, likes:0, user:{ id:user.id, username:user.username } }
-    const returned=await blogService.create(blog)
-    console.log('returned',returned)
+  const handleNewBlog=async (blog) => {
+    const blogFilled={ title: blog.title, author: blog.author, url: blog.url, likes:0, user:{ id:user.id, username:user.username } }
+    const returned=await blogService.create(blogFilled)
     setBlogs(blogs.concat(returned))
   	setCreateBlogVisible(false)
     setSuccessMessage(`new blog added by ${user.username}`)
@@ -30,7 +29,8 @@ const AddBlog=({ blogs, setBlogs, setSuccessMessage, user }) => {
 
     	</div>
       <div style={showWhenVisible}>
-        <label>
+        <AddForm handleAdd={handleNewBlog}/>
+        {/*<label>
                 Title:
           <input
           	type='text'
@@ -56,7 +56,7 @@ const AddBlog=({ blogs, setBlogs, setSuccessMessage, user }) => {
             onChange={({ target }) => setUrl(target.value)}>
           </input>
         </label>
-        <Button handleClick={handleNewBlog} text='Add Blog'/>
+        <Button handleClick={handleNewBlog} text='Add Blog'/>*/}
         <button onClick={() => setCreateBlogVisible(false)}>Cancel</button>
     	</div>
     </div>

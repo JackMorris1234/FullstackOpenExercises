@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import blogservice from '../services/blogs'
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, eventHandlerForTesting }) => {
   const [detailsVisible, setDetailsVisible]=useState(false)
   const hideWhenVisible = { display: detailsVisible ? 'none' : '' }
   const showWhenVisible = { display: detailsVisible ? '' : 'none' }
@@ -32,7 +32,9 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         <button onClick={() => setDetailsVisible(true)} style={hideWhenVisible}>View</button>
       </div>
       <div style={showWhenVisible}>
-          Likes: {blog.likes}<button onClick={handleLike}>Like</button><br/>  URL: {blog.url}<br/>
+          Likes: {blog.likes}<button onClick={handleLike}>Like</button>
+          <br/>  URL: {blog.url}<br/>
+          <button onClick={eventHandlerForTesting}>TestLike</button>
         <div>User: {blog.user.username}</div>
         <button onClick={handleDelete}>Delete</button>
         <button onClick={() => setDetailsVisible(false)}>Hide</button>
