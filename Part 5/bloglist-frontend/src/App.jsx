@@ -12,14 +12,17 @@ const App = () => {
   const[successMessage, setSuccessMessage]=useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService.getAll().then(blogs => {
+      const sorted = [...blogs].sort(
+        (blog1, blog2) => blog2.likes - blog1.likes
+      )
+      setBlogs(sorted)
+    })
   }, [])
 
-  useEffect(() => {
-    blogs.sort((blog1, blog2) => blog2.likes-blog1.likes)
-  }, [blogs])
+  // useEffect(() => {
+  //   blogs.sort((blog1, blog2) => blog2.likes-blog1.likes)
+  // }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('BlogListUser')
@@ -45,7 +48,7 @@ const App = () => {
       <Notification message={successMessage}/>
       {user &&<AddBlog blogs={blogs} setBlogs={setBlogs} setSuccessMessage={setSuccessMessage} user={user}/>}
       {user && <h2>blogs</h2> && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs}/>
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user}/>
       )}
     </div>
   )

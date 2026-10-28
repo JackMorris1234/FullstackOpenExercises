@@ -1,5 +1,14 @@
 const mongoose=require('mongoose')
 
+let blogModel=''
+let userModel=''
+if(process.env.NODE_ENV=='test'){
+  blogModel='testBlog'
+  userModel='testUser'
+}else{
+  blogModel='Blog'
+  userModel='User'
+}
 
 const blogSchema = new mongoose.Schema({
   title:{
@@ -19,7 +28,7 @@ const blogSchema = new mongoose.Schema({
   },
   user:{
     type: mongoose.Schema.Types.ObjectId,
-    ref:'User',
+    ref:`${userModel}`,
     required:true
   }
 })
@@ -33,6 +42,4 @@ blogSchema.set('toJSON', {
 })
 
 
-
-module.exports = mongoose.model('Blog', blogSchema)
-
+module.exports = mongoose.model(blogModel, blogSchema)

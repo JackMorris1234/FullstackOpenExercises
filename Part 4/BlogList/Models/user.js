@@ -1,5 +1,14 @@
 const mongoose = require('mongoose')
 
+let blogModel=''
+let userModel=''
+if(process.env.NODE_ENV=='test'){
+  blogModel='testBlog'
+  userModel='testUser'
+}else{
+  blogModel='Blog'
+  userModel='User'
+}
 const userSchema = new mongoose.Schema({
   username:{
     type:String,
@@ -15,7 +24,7 @@ const userSchema = new mongoose.Schema({
   blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Blog'
+      ref: `${blogModel}`
     }
   ],
 })
@@ -30,6 +39,6 @@ userSchema.set('toJSON', {
   }
 })
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model(userModel , userSchema)
 
 module.exports = User
